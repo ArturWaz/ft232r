@@ -13,18 +13,18 @@
 
 
 #include <string>
-#include <cstdint>
+#include <stdint.h>
 
 
 class FT232R {
 public:
 
-	enum class OpenMode : std::uint32_t {
+	enum class OpenMode : uint32_t {
 		SERIAL_NUMBER = 1,
 		DESCRIPTION = 2
 	};
 
-	enum class StdBaud : std::uint32_t {
+	enum class StdBaud : uint32_t {
 		B300 = 300,
 		B600 = 600,
 		B1200 = 1200,
@@ -41,17 +41,17 @@ public:
 		B921600 = 921600
 	};
 
-	enum class DataLength : std::uint8_t {
+	enum class DataLength : uint8_t {
 		SEVEN = 7,
 		EIGHT = 8
 	};
 
-	enum class StopBits : std::uint8_t {
+	enum class StopBits : uint8_t {
 		ONE = 0,
 		TWO = 2
 	};
 
-	enum class Parity : std::uint8_t {
+	enum class Parity : uint8_t {
 		NONE = 0,
 		ODD = 1,
 		EVEN = 2,
@@ -61,7 +61,7 @@ public:
 
 
 
-	FT232R(char const *deviceName, OpenMode openMode, std::uint32_t baudrate, Parity =Parity::NONE, StopBits =StopBits::ONE, DataLength =DataLength::EIGHT);
+	FT232R(char const *deviceName, OpenMode openMode, uint32_t baudrate, Parity =Parity::NONE, StopBits =StopBits::ONE, DataLength =DataLength::EIGHT);
 	~FT232R();
 
 	void open();
@@ -69,7 +69,7 @@ public:
 	void resetDevice();
 	inline bool isOpen() const { return isOpen_; }
 
-	void setBaudrate(std::uint32_t baudrate);
+	void setBaudrate(uint32_t baudrate);
 	void setDataLength(DataLength length);
 	void setStopBits(StopBits stopBits);
 	void setParity(Parity parity);
@@ -79,14 +79,14 @@ public:
 	void purgeTXbuffer();
 
 
-	std::uint32_t sendByte(std::uint8_t byte);
-	std::uint32_t sendBytes(std::uint8_t *buffer, std::uint32_t bufferLength);
+	uint32_t sendByte(uint8_t byte);
+	uint32_t sendBytes(uint8_t *buffer, uint32_t bufferLength);
 
-	std::uint32_t readByte(std::uint8_t &byte);
-	std::uint32_t readBytes(std::uint8_t *buffer, std::uint32_t bufferLength);
+	uint32_t readByte(uint8_t &byte);
+	uint32_t readBytes(uint8_t *buffer, uint32_t bufferLength);
 
-	std::uint32_t getNumberOfBytesInReadBuffer();
-	void getNumberOfBytesInBuffers(std::uint32_t &readBuffer, std::uint32_t &writeBuffer);
+	uint32_t getNumberOfBytesInReadBuffer();
+	void getNumberOfBytesInBuffers(uint32_t &readBuffer, uint32_t &writeBuffer);
 
 
 	static void connectedDevicesList();
@@ -94,7 +94,7 @@ public:
 private:
 
 	std::string deviceName_;
-	std::uint32_t baudrate_;
+	uint32_t baudrate_;
 	DataLength dataLength_;
 	StopBits stopBits_;
 	Parity parity_;
@@ -106,8 +106,8 @@ private:
 	FT232R(FT232R&) {}
 	void operator=(FT232R) {}
 
-	void handleError(std::string function, std::uint32_t status); // generate exceptions
-	std::uint32_t configureTransmissionSettings();
+	void handleError(std::string function, uint32_t status); // generate exceptions
+	uint32_t configureTransmissionSettings();
 
 };
 

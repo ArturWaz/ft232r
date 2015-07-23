@@ -19,7 +19,7 @@
 #endif
 
 
-FT232R::FT232R(char const *deviceName, OpenMode openMode, std::uint32_t baudrate, Parity parity, StopBits stopBits, DataLength length)
+FT232R::FT232R(char const *deviceName, OpenMode openMode, uint32_t baudrate, Parity parity, StopBits stopBits, DataLength length)
 				: deviceName_(deviceName),
 				  baudrate_(baudrate),
 				  dataLength_(length),
@@ -59,10 +59,10 @@ void FT232R::resetDevice() {
 }
 
 
-void FT232R::setBaudrate(std::uint32_t baudrate) {
+void FT232R::setBaudrate(uint32_t baudrate) {
 	baudrate_ = baudrate;
 	FT_STATUS ftStatus = FT_SetBaudRate(ftHandle_,baudrate_);
-	if (ftStatus != FT_OK) handleError("setBaudrate(std::uint32_t)", ftStatus);
+	if (ftStatus != FT_OK) handleError("setBaudrate(uint32_t)", ftStatus);
 }
 
 
@@ -105,61 +105,61 @@ void FT232R::purgeTXbuffer() {
 }
 
 
-std::uint32_t FT232R::getNumberOfBytesInReadBuffer() {
-	std::uint32_t bytesRead;
+uint32_t FT232R::getNumberOfBytesInReadBuffer() {
+	uint32_t bytesRead;
 	FT_STATUS ftStatus = FT_GetQueueStatus(ftHandle_,CAST_TO_LPDWORD(&bytesRead));
 	if (ftStatus != FT_OK) handleError("getNumberOfBytesInReadBuffer()", ftStatus);
 	return bytesRead;
 }
 
 
-void FT232R::getNumberOfBytesInBuffers(std::uint32_t &readBuffer, std::uint32_t &writeBuffer) {
+void FT232R::getNumberOfBytesInBuffers(uint32_t &readBuffer, uint32_t &writeBuffer) {
 	uint32_t nothing;
 	FT_STATUS ftStatus = FT_GetStatus(ftHandle_,CAST_TO_LPDWORD(&readBuffer),CAST_TO_LPDWORD(&writeBuffer),CAST_TO_LPDWORD(&nothing));
-	if (ftStatus != FT_OK) handleError("getNumberOfBytesInBuffers(std::uint32_t &, std::uint32_t &)", ftStatus);
+	if (ftStatus != FT_OK) handleError("getNumberOfBytesInBuffers(uint32_t &, uint32_t &)", ftStatus);
 }
 
 
-std::uint32_t FT232R::sendByte(std::uint8_t byte) {
-	std::uint32_t bytesWritten;
+uint32_t FT232R::sendByte(uint8_t byte) {
+	uint32_t bytesWritten;
 	FT_STATUS ftStatus = FT_Write(ftHandle_, &byte, 1, CAST_TO_LPDWORD(&bytesWritten));
-	if (ftStatus != FT_OK) handleError("sendByte(std::uint8_t)", ftStatus);
+	if (ftStatus != FT_OK) handleError("sendByte(uint8_t)", ftStatus);
 	return bytesWritten;
 }
 
 
-std::uint32_t FT232R::sendBytes(std::uint8_t *buffer, std::uint32_t bufferLength) {
-	std::uint32_t bytesWritten;
+uint32_t FT232R::sendBytes(uint8_t *buffer, uint32_t bufferLength) {
+	uint32_t bytesWritten;
 	FT_STATUS ftStatus = FT_Write(ftHandle_, buffer, bufferLength, CAST_TO_LPDWORD(&bytesWritten));
-	if (ftStatus != FT_OK) handleError("sendBytes(std::uint8_t *, std::uint32_t)", ftStatus);
+	if (ftStatus != FT_OK) handleError("sendBytes(uint8_t *, uint32_t)", ftStatus);
 	return bytesWritten;
 }
 
 
-std::uint32_t FT232R::readByte(std::uint8_t &byte) {
-	std::uint32_t bytesRead;
+uint32_t FT232R::readByte(uint8_t &byte) {
+	uint32_t bytesRead;
 	FT_STATUS ftStatus = FT_GetQueueStatus(ftHandle_,CAST_TO_LPDWORD(&bytesRead));
-	if (ftStatus != FT_OK) handleError("readBytes(std::uint8_t *, std::uint32_t)", ftStatus);
+	if (ftStatus != FT_OK) handleError("readBytes(uint8_t *, uint32_t)", ftStatus);
 	if (bytesRead == 0) return 0;
 	ftStatus = FT_Read(ftHandle_, &byte, 1, CAST_TO_LPDWORD(&bytesRead));
-	if (ftStatus != FT_OK) handleError("readBytes(std::uint8_t *, std::uint32_t)", ftStatus);
+	if (ftStatus != FT_OK) handleError("readBytes(uint8_t *, uint32_t)", ftStatus);
 	return bytesRead;
 }
 
 
-std::uint32_t FT232R::readBytes(std::uint8_t *buffer, std::uint32_t bufferLength) {
-	std::uint32_t bytesRead;
+uint32_t FT232R::readBytes(uint8_t *buffer, uint32_t bufferLength) {
+	uint32_t bytesRead;
 	FT_STATUS ftStatus = FT_GetQueueStatus(ftHandle_,CAST_TO_LPDWORD(&bytesRead));
-	if (ftStatus != FT_OK) handleError("readBytes(std::uint8_t *, std::uint32_t)", ftStatus);
+	if (ftStatus != FT_OK) handleError("readBytes(uint8_t *, uint32_t)", ftStatus);
 	if (bytesRead == 0) return 0;
 	if (bufferLength < bytesRead) bytesRead = bufferLength;
 	ftStatus = FT_Read(ftHandle_, buffer, bytesRead, CAST_TO_LPDWORD(&bytesRead));
-	if (ftStatus != FT_OK) handleError("readBytes(std::uint8_t *, std::uint32_t)", ftStatus);
+	if (ftStatus != FT_OK) handleError("readBytes(uint8_t *, uint32_t)", ftStatus);
 	return bytesRead;
 }
 
 
-void FT232R::handleError(std::string function, std::uint32_t status) {
+void FT232R::handleError(string function, uint32_t status) {
 	switch(status) {
 	case FT_OK:
 		return;
@@ -183,8 +183,8 @@ void FT232R::handleError(std::string function, std::uint32_t status) {
 }
 
 
-std::uint32_t FT232R::configureTransmissionSettings() {
-	return FT_SetDataCharacteristics(ftHandle_,std::uint8_t(dataLength_),std::uint8_t(stopBits_),std::uint8_t(parity_));
+uint32_t FT232R::configureTransmissionSettings() {
+	return FT_SetDataCharacteristics(ftHandle_,uint8_t(dataLength_),uint8_t(stopBits_),uint8_t(parity_));
 }
 
 
