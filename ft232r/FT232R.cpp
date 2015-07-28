@@ -159,7 +159,7 @@ uint32_t FT232R::readBytes(uint8_t *buffer, uint32_t bufferLength) {
 }
 
 
-void FT232R::handleError(string function, uint32_t status) {
+void FT232R::handleError(std::string function, uint32_t status) {
 	switch(status) {
 	case FT_OK:
 		return;
