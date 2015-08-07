@@ -26,6 +26,8 @@ FT232R::FT232R(char const *deviceName, OpenMode openMode, uint32_t baudrate, Par
 				  stopBits_(stopBits),
 				  parity_(parity),
 				  openMode_(openMode),
+				  readTimeout_(0),
+				  writeTimeout_(0),
 				  isOpen_(false),
 				  ftHandle_(nullptr) {}
 
@@ -40,6 +42,8 @@ void FT232R::open() {
 	if (ftStatus != FT_OK) handleError("open()", ftStatus);
 	isOpen_ = true;
 	setBaudrate(baudrate_);
+	setTimeouts(readTimeout_,writeTimeout_);
+	setStopBits(stopBits_);
 	setDataLength(dataLength_);
 	setParity(parity_);
 	purgeBuffers();
@@ -63,6 +67,14 @@ void FT232R::setBaudrate(uint32_t baudrate) {
 	baudrate_ = baudrate;
 	FT_STATUS ftStatus = FT_SetBaudRate(ftHandle_,baudrate_);
 	if (ftStatus != FT_OK) handleError("setBaudrate(uint32_t)", ftStatus);
+}
+
+
+void FT232R::setTimeouts(uint32_t readTimeout, uint32_t writeTimeout) {
+	readTimeout_ = readTimeout;
+	writeTimeout_ = writeTimeout;
+	FT_STATUS ftStatus = FT_SetTimeouts(ftHandle_,readTimeout_,writeTimeout_);
+	if (ftStatus != FT_OK) handleError("setTimeouts(uint32_t)", ftStatus);
 }
 
 

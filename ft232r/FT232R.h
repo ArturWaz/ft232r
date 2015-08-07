@@ -70,6 +70,7 @@ public:
 	inline bool isOpen() const { return isOpen_; }
 
 	void setBaudrate(uint32_t baudrate);
+	void setTimeouts(uint32_t readTimeout, uint32_t writeTimeout);
 	void setDataLength(DataLength length);
 	void setStopBits(StopBits stopBits);
 	void setParity(Parity parity);
@@ -91,6 +92,7 @@ public:
 
 	static void connectedDevicesList();
 
+
 private:
 
 	std::string deviceName_;
@@ -99,6 +101,8 @@ private:
 	StopBits stopBits_;
 	Parity parity_;
 	OpenMode openMode_;
+	uint32_t readTimeout_;
+	uint32_t writeTimeout_;
 
 	bool isOpen_;
 	void *ftHandle_;

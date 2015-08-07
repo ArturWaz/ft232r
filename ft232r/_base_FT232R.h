@@ -34,6 +34,8 @@ public:
 
 	inline FT_STATUS setBaudRate(uint32_t BaudRate) {
 		return FT_SetBaudRate(handle_,BaudRate); }
+	inline FT_STATUS setTimeouts(uint32_t ReadTimeout, uint32_t WriteTimeout) {
+		return FT_SetTimeouts(handle_,ReadTimeout,WriteTimeout); }
 	inline FT_STATUS setDataCharacteristics(uint8_t WordLength, uint8_t StopBits, uint8_t Parity) {
 		return FT_SetDataCharacteristics(handle_,WordLength,StopBits,Parity); }
 
