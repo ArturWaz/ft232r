@@ -81,7 +81,7 @@ public:
 
 
 	uint32_t sendByte(uint8_t byte);
-	uint32_t sendBytes(uint8_t *buffer, uint32_t bufferLength);
+	uint32_t sendBytes(uint8_t const *buffer, uint32_t bufferLength);
 
 	uint32_t readByte(uint8_t &byte);
 	uint32_t readBytes(uint8_t *buffer, uint32_t bufferLength);
