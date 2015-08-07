@@ -171,6 +171,16 @@ uint32_t FT232R::readBytes(uint8_t *buffer, uint32_t bufferLength) {
 }
 
 
+uint32_t FT232R::readBytes(uint8_t *buffer, uint32_t bufferLength, uint32_t bytesToRead) {
+	if (bytesToRead == 0) return 0;
+	if (bufferLength < bytesToRead) bytesToRead = bufferLength;
+	uint32_t bytesRead;
+	FT_STATUS ftStatus = FT_Read(ftHandle_, buffer, bytesToRead, CAST_TO_LPDWORD(&bytesRead));
+	if (ftStatus != FT_OK) handleError("readBytes(uint8_t *, uint32_t)", ftStatus);
+	return bytesRead;
+}
+
+
 void FT232R::handleError(std::string function, uint32_t status) {
 	switch(status) {
 	case FT_OK:

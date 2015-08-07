@@ -85,6 +85,7 @@ public:
 
 	uint32_t readByte(uint8_t &byte);
 	uint32_t readBytes(uint8_t *buffer, uint32_t bufferLength);
+	uint32_t readBytes(uint8_t *buffer, uint32_t bufferLength, uint32_t bytesToRead);
 
 	uint32_t getNumberOfBytesInReadBuffer();
 	void getNumberOfBytesInBuffers(uint32_t &readBuffer, uint32_t &writeBuffer);
