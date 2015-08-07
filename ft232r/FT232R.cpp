@@ -142,7 +142,7 @@ uint32_t FT232R::sendByte(uint8_t byte) {
 
 uint32_t FT232R::sendBytes(uint8_t const *buffer, uint32_t bufferLength) {
 	uint32_t bytesWritten;
-	FT_STATUS ftStatus = FT_Write(ftHandle_, static_cast<void*>(buffer), bufferLength, CAST_TO_LPDWORD(&bytesWritten));
+	FT_STATUS ftStatus = FT_Write(ftHandle_, const_cast<uint8_t*>(buffer), bufferLength, CAST_TO_LPDWORD(&bytesWritten));
 	if (ftStatus != FT_OK) handleError("sendBytes(uint8_t *, uint32_t)", ftStatus);
 	return bytesWritten;
 }
