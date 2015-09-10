@@ -1,5 +1,5 @@
 
-set(ft232r_source_files _base_FT232R.h FT232R.cpp FT232R.h)
+set(ft232r_source_files _ftd2xx.h FT232R.cpp FT232R.h)
 
 add_library(ft232r ${ft232r_source_files})
 

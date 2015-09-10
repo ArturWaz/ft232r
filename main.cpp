@@ -8,7 +8,8 @@
 
 
 #include "ft232r/FT232R.h"
-#include "ft232r/_base_FT232R.h"
+#include "ft232r/_ftd2xx.h"
+#include "test.h"
 
 #include <exception>
 #include <stdexcept>
@@ -26,15 +27,17 @@ void test();
 int main() {
 
 	//FT232R::connectedDevicesList();
-	test();
+	//test();
 
+
+	//testClass::connectedDevicesList();
 
 }
 
 
 
 void test() {
-	FT232R f("FT232R ElectroPark", FT232R::OpenMode::DESCRIPTION, 3000000);
+	FT232R f("FT232R ElectroPark", _ftd2xx::OpenMode::DESCRIPTION, 3000000);
 	f.open();
 
 	cout << "Number of bytes in buffer: " << f.getNumberOfBytesInReadBuffer() << endl;

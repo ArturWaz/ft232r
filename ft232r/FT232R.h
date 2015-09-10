@@ -15,104 +15,61 @@
 #include <string>
 #include <stdint.h>
 
+#include "_ftd2xx.h"
+
 
 class FT232R {
 public:
 
-	enum class OpenMode : uint32_t {
-		SERIAL_NUMBER = 1,
-		DESCRIPTION = 2
-	};
+	FT232R(char const *deviceName, _ftd2xx::OpenMode openMode, uint32_t baudrate, _ftd2xx::Parity =_ftd2xx::Parity::NONE, _ftd2xx::StopBits =_ftd2xx::StopBits::ONE, _ftd2xx::WordLength =_ftd2xx::WordLength::EIGHT) noexcept;
+	~FT232R() noexcept;
 
-	enum class StdBaud : uint32_t {
-		B300 = 300,
-		B600 = 600,
-		B1200 = 1200,
-		B2400 = 2400,
-		B4800 = 4800,
-		B9600 = 9600,
-		B14400 = 14400,
-		B19200 = 19200,
-		B38400 = 38400,
-		B57600 = 57600,
-		B115200 = 115200,
-		B230400 = 230400,
-		B460800 = 460800,
-		B921600 = 921600
-	};
-
-	enum class DataLength : uint8_t {
-		SEVEN = 7,
-		EIGHT = 8
-	};
-
-	enum class StopBits : uint8_t {
-		ONE = 0,
-		TWO = 2
-	};
-
-	enum class Parity : uint8_t {
-		NONE = 0,
-		ODD = 1,
-		EVEN = 2,
-		MARK = 3,
-		SPACE = 4
-	};
+	void open() noexcept;
+	void close() noexcept;
+	void resetDevice() noexcept;
+	inline bool isOpen() const noexcept { return isOpen_; }
 
 
-
-	FT232R(char const *deviceName, OpenMode openMode, uint32_t baudrate, Parity =Parity::NONE, StopBits =StopBits::ONE, DataLength =DataLength::EIGHT);
-	~FT232R();
-
-	void open();
-	void close();
-	void resetDevice();
-	inline bool isOpen() const { return isOpen_; }
-
-	void setBaudrate(uint32_t baudrate);
-	void setTimeouts(uint32_t readTimeout, uint32_t writeTimeout);
-	void setDataLength(DataLength length);
-	void setStopBits(StopBits stopBits);
-	void setParity(Parity parity);
-
-	void purgeBuffers();
-	void purgeRXbuffer();
-	void purgeTXbuffer();
+    void setBaudrate(uint32_t baudrate) noexcept;
+	void setBaudrate(_ftd2xx::Baudrate baudrate) noexcept;
+	void setTransmissionSettings(_ftd2xx::Parity, _ftd2xx::StopBits, _ftd2xx::WordLength) noexcept;
 
 
-	uint32_t sendByte(uint8_t byte);
-	uint32_t sendBytes(uint8_t const *buffer, uint32_t bufferLength);
+    void setTimeouts(uint32_t readTimeout, uint32_t writeTimeout) noexcept;
 
-	uint32_t readByte(uint8_t &byte);
-	uint32_t readBytes(uint8_t *buffer, uint32_t bufferLength);
-	uint32_t readBytes(uint8_t *buffer, uint32_t bufferLength, uint32_t bytesToRead);
-
-	uint32_t getNumberOfBytesInReadBuffer();
-	void getNumberOfBytesInBuffers(uint32_t &readBuffer, uint32_t &writeBuffer);
+	void purgeBuffers() noexcept;
+	void purgeRXbuffer() noexcept;
+	void purgeTXbuffer() noexcept;
 
 
-	static void connectedDevicesList();
+	uint32_t sendByte(uint8_t byte) noexcept;
+	uint32_t sendBytes(uint8_t const *buffer, uint32_t bufferLength) noexcept;
 
+	uint32_t readByte(uint8_t &byte) noexcept;
+	uint32_t readBytes(uint8_t *buffer, uint32_t bufferLength) noexcept;
+	uint32_t readBytes(uint8_t *buffer, uint32_t bufferLength, uint32_t bytesToRead) noexcept;
+
+	uint32_t getNumberOfBytesInReadBuffer() noexcept;
+	void getNumberOfBytesInBuffers(uint32_t &readBuffer, uint32_t &writeBuffer) noexcept;
+
+
+	inline static void connectedDevicesList() noexcept;
+
+
+    FT_HANDLE const &operator*() const noexcept { return ftHandle_; }
 
 private:
 
-	std::string deviceName_;
-	uint32_t baudrate_;
-	DataLength dataLength_;
-	StopBits stopBits_;
-	Parity parity_;
-	OpenMode openMode_;
-	uint32_t readTimeout_;
-	uint32_t writeTimeout_;
+	FT_HANDLE ftHandle_;
+    bool isOpen_;
 
-	bool isOpen_;
-	void *ftHandle_;
+    std::string deviceName_;
+    _ftd2xx::OpenMode openMode_;
 
 	FT232R(FT232R&) {}
 	void operator=(FT232R) {}
 
 	void handleError(std::string function, uint32_t status); // generate exceptions
-	uint32_t configureTransmissionSettings();
 
 };
 
