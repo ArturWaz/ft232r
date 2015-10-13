@@ -69,7 +69,7 @@ namespace ftd2xx_t {
 namespace wrapper_ftd2xx {
 
 	inline FT_STATUS open(FT_HANDLE &handler, void *pArg1, uint32_t Flags) noexcept {
-		return FT_OpenEx(pArg1,Flags,&handler); 
+		return FT_OpenEx(pArg1,ULONG(Flags),&handler);
 	}
 	inline FT_STATUS close(FT_HANDLE handler) noexcept {
 		return FT_Close(handler); 
@@ -80,19 +80,19 @@ namespace wrapper_ftd2xx {
 
 	
 	inline FT_STATUS setBaudRate(FT_HANDLE handler, uint32_t BaudRate) noexcept {
-		return FT_SetBaudRate(handler,BaudRate); 
+		return FT_SetBaudRate(handler,ULONG(BaudRate));
 	}
 	inline FT_STATUS setBaudRate(FT_HANDLE handler, ftd2xx_t::Baudrate BaudRate) noexcept {
-		return FT_SetBaudRate(handler,uint32_t(BaudRate));
+		return FT_SetBaudRate(handler,ULONG(BaudRate));
 	}
 	inline FT_STATUS setDataCharacteristics(FT_HANDLE handler, uint8_t WordLength, uint8_t StopBits, uint8_t Parity) noexcept {
-		return FT_SetDataCharacteristics(handler,WordLength,StopBits,Parity); 
+		return FT_SetDataCharacteristics(handler,UCHAR(WordLength),UCHAR(StopBits),UCHAR(Parity));
 	}
 	inline FT_STATUS setDataCharacteristics(FT_HANDLE handler, ftd2xx_t::WordLength wordLength, ftd2xx_t::StopBits stopBits, ftd2xx_t::Parity parity) noexcept {
 		return FT_SetDataCharacteristics(handler,UCHAR(wordLength),UCHAR(stopBits),UCHAR(parity));
 	}
 	inline FT_STATUS setTimeouts(FT_HANDLE handler, uint32_t ReadTimeout, uint32_t WriteTimeout) noexcept {
-		return FT_SetTimeouts(handler,ReadTimeout,WriteTimeout);
+		return FT_SetTimeouts(handler,ULONG(ReadTimeout),ULONG(WriteTimeout));
 	}
 
 	
@@ -105,13 +105,13 @@ namespace wrapper_ftd2xx {
 
 	
 	inline FT_STATUS purge(FT_HANDLE handler, uint32_t Mask) noexcept {
-		return FT_Purge(handler,Mask); 
+		return FT_Purge(handler,ULONG(Mask));
 	}
 	inline FT_STATUS read(FT_HANDLE handler, uint8_t *Buffer, uint32_t BytesToRead, uint32_t *BytesReturned) noexcept {
-		return FT_Read(handler,Buffer,BytesToRead,CAST_TO_LPDWORD(BytesReturned)); 
+		return FT_Read(handler,Buffer,ULONG(BytesToRead),CAST_TO_LPDWORD(BytesReturned));
 	}
 	inline FT_STATUS write(FT_HANDLE handler, uint8_t *Buffer, uint32_t BytesToWrite, uint32_t *BytesWritten) noexcept {
-		return FT_Write(handler,Buffer,BytesToWrite,CAST_TO_LPDWORD(BytesWritten)); 
+		return FT_Write(handler,Buffer,ULONG(BytesToWrite),CAST_TO_LPDWORD(BytesWritten));
 	}
 
 }
