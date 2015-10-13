@@ -15,14 +15,14 @@
 #include <string>
 #include <stdint.h>
 
-#include "_ftd2xx.h"
+#include "wrapper_ftd2xx.h"
 
 
-class FT232R {
+class ftd2xx {
 public:
 
-	FT232R(char const *deviceName, _ftd2xx::OpenMode openMode, uint32_t baudrate, _ftd2xx::Parity =_ftd2xx::Parity::NONE, _ftd2xx::StopBits =_ftd2xx::StopBits::ONE, _ftd2xx::WordLength =_ftd2xx::WordLength::EIGHT) noexcept;
-	~FT232R() noexcept;
+	ftd2xx(char const *deviceName, ftd2xx_t::OpenMode openMode, uint32_t baudrate, ftd2xx_t::Parity = ftd2xx_t::Parity::NONE, ftd2xx_t::StopBits = ftd2xx_t::StopBits::ONE, ftd2xx_t::WordLength = ftd2xx_t::WordLength::EIGHT) noexcept;
+	~ftd2xx() noexcept;
 
 	void open() noexcept;
 	void close() noexcept;
@@ -31,8 +31,8 @@ public:
 
 
     void setBaudrate(uint32_t baudrate) noexcept;
-	void setBaudrate(_ftd2xx::Baudrate baudrate) noexcept;
-	void setTransmissionSettings(_ftd2xx::Parity, _ftd2xx::StopBits, _ftd2xx::WordLength) noexcept;
+	void setBaudrate(ftd2xx_t::Baudrate baudrate) noexcept;
+	void setTransmissionSettings(ftd2xx_t::Parity, ftd2xx_t::StopBits, ftd2xx_t::WordLength) noexcept;
 
 
     void setTimeouts(uint32_t readTimeout, uint32_t writeTimeout) noexcept;
@@ -64,10 +64,10 @@ private:
     bool isOpen_;
 
     std::string deviceName_;
-    _ftd2xx::OpenMode openMode_;
+	ftd2xx_t::OpenMode openMode_;
 
-	FT232R(FT232R&) {}
-	void operator=(FT232R) {}
+	ftd2xx(ftd2xx &) {}
+	void operator=(ftd2xx) {}
 
 	void handleError(std::string function, uint32_t status); // generate exceptions
 

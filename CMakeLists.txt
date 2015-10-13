@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.10)
 
 
-set(PROJECT_NAME uart)
+set(PROJECT_NAME ftdi_unitTests)
 project(${PROJECT_NAME})
 
 
@@ -19,9 +19,9 @@ endif ( UNIX )
 
 
 
-add_subdirectory(ft232r)
+add_subdirectory(ftdi)
 
 
-add_executable(${PROJECT_NAME} main.cpp)
-target_link_libraries (${PROJECT_NAME} ft232r)
+add_executable(${PROJECT_NAME} unitTests/unitTests_ftdi.cpp)
+target_link_libraries (${PROJECT_NAME} ftdi boost_unit_test_framework)
 

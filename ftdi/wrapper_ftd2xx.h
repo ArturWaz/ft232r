@@ -12,7 +12,7 @@
 #include <stdint.h>
 #include <iostream>
 
-#include "ftdi/ftd2xx.h"
+#include "ftd2xx_from_FTDI/ftd2xx.h"
 
 
 
@@ -22,7 +22,7 @@
 /*
  *  Wrapper (from c language)
  */
-namespace _ftd2xx {
+namespace ftd2xx_t {
 
 	enum class OpenMode : uint32_t {
 		SERIAL_NUMBER = 1,
@@ -64,6 +64,9 @@ namespace _ftd2xx {
 		SPACE = 4
 	};
 
+}
+
+namespace wrapper_ftd2xx {
 
 	inline FT_STATUS open(FT_HANDLE &handler, void *pArg1, uint32_t Flags) noexcept {
 		return FT_OpenEx(pArg1,Flags,&handler); 
@@ -79,13 +82,13 @@ namespace _ftd2xx {
 	inline FT_STATUS setBaudRate(FT_HANDLE handler, uint32_t BaudRate) noexcept {
 		return FT_SetBaudRate(handler,BaudRate); 
 	}
-	inline FT_STATUS setBaudRate(FT_HANDLE handler, Baudrate BaudRate) noexcept {
+	inline FT_STATUS setBaudRate(FT_HANDLE handler, ftd2xx_t::Baudrate BaudRate) noexcept {
 		return FT_SetBaudRate(handler,uint32_t(BaudRate));
 	}
 	inline FT_STATUS setDataCharacteristics(FT_HANDLE handler, uint8_t WordLength, uint8_t StopBits, uint8_t Parity) noexcept {
 		return FT_SetDataCharacteristics(handler,WordLength,StopBits,Parity); 
 	}
-	inline FT_STATUS setDataCharacteristics(FT_HANDLE handler, WordLength wordLength, StopBits stopBits, Parity parity) noexcept {
+	inline FT_STATUS setDataCharacteristics(FT_HANDLE handler, ftd2xx_t::WordLength wordLength, ftd2xx_t::StopBits stopBits, ftd2xx_t::Parity parity) noexcept {
 		return FT_SetDataCharacteristics(handler,UCHAR(wordLength),UCHAR(stopBits),UCHAR(parity));
 	}
 	inline FT_STATUS setTimeouts(FT_HANDLE handler, uint32_t ReadTimeout, uint32_t WriteTimeout) noexcept {
